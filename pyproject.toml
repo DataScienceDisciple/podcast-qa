@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "hubermanlab-qa"
+version = "0.1.0"
+description = "Your personal Huberman Lab Podcast assistant"
+authors = ["Luke Skyward <luke.skyward.ai@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^2.0.1"
+python-youtube = "^0.9.0"
+google-api-python-client = "^2.86.0"
+pydantic = "^1.10.7"
+youtube-transcript-api = "^0.6.0"
+langchain = "^0.0.156"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.22.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,5 @@
+config/yt_api.json
+data/*.csv
+data/transcripts/*.txt
+data/summaries/*.txt
+*.DS_Store
