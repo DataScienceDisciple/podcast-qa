@@ -1,4 +1,5 @@
 config/yt_api.json
+config/openai_api.json
 data/*.csv
 data/transcripts/*.txt
 data/summaries/*.txt

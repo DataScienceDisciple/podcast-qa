@@ -13,6 +13,8 @@ google-api-python-client = "^2.86.0"
 pydantic = "^1.10.7"
 youtube-transcript-api = "^0.6.0"
 langchain = "^0.0.156"
+openai = "^0.27.6"
+tiktoken = "^0.3.3"
 
 
 [tool.poetry.group.dev.dependencies]
