@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "hubermanlab-qa"
+name = "podcast-qa"
 version = "0.1.0"
-description = "Your personal Huberman Lab Podcast assistant"
+description = "Your personal Podcast assistant"
 authors = ["Luke Skyward <luke.skyward.ai@gmail.com>"]
 readme = "README.md"
 

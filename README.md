@@ -1,26 +1,31 @@
-# HubermanLab QA CLI Tool
-The HubermanLab QA command line tool allows you to ask a health-related question and get actionable insights along with references to relevant resources. The resources are based on the content of the Huberman Lab Podcast, which is hosted by Andrew Huberman, a neuroscientist and tenured Professor at the Department of Neurobiology at Stanford University School of Medicine.
+# Podcast QA CLI Tool
+The Podcast QA command line tool offers an innovative way to explore the knowledge embedded in some of the world's most influential podcasts. By simply asking a question, you can get actionable insights and references to relevant resources. The sources of these insights are the analyzed content from the supported podcasts.
+
+Currently, our supported podcasts include:
+- HubermanLab podcast - hosted by Andrew Huberman, a neuroscientist and tenured Professor at the Department of Neurobiology at Stanford University School of Medicine.
 
 ## Features
 The CLI tool allows you to:
 
-- **Setup** paths to which the outputs will be saved. If the paths are not setup, the default paths will be taken.
-- **Perform** Question Answering: This mode will return the answer and relevant segments.
-- **Search** for resources: This mode will return only the relevant resources, without checking if they are relevant nor providing a final answer.
+- **Setup output paths:** Define the directories where the outputs will be saved. If the paths are not set up, the tool will use default paths.
+- **Perform Question Answering:** In this mode, the tool will provide an answer to your query and point out relevant segments from the podcast episodes.
+- **Search for resources:** If you're interested in gathering resources without checking their relevance or obtaining a specific answer, this mode will fetch and return the relevant podcast episodes and segments.
+
+**Note:** In the resource searching mode, the tool will not require calling the OpenAI API, thus it won't incur any costs and won't require providing the OPENAI_API_KEY.
 
 ## Installation
 There are two ways to install the CLI tool: directly from PyPi using pip, or by cloning the repository and installing the requirements.
 
 #### Method 1: PyPi
 ```bash
-pip install hubermanlabqa
+pip install podcastqa
 ```
 
 #### Method 2: From Repository
 First, clone the repository to your local machine:
 ```bash
-git clone https://github.com/<username>/HubermanLabQA.git
-cd HubermanLabQA
+git clone https://github.com/DataScienceDisciple/podcast-qa
+cd podcast-qa
 ```
 
 Then install the necessary dependencies:
