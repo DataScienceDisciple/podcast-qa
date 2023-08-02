@@ -1,5 +1,6 @@
 import faiss
 import json
+import markdown
 import time
 import numpy as np
 import pandas as pd
@@ -21,6 +22,61 @@ from sentence_transformers import SentenceTransformer
 
 from .prompts.segment_template import SEGMENT_SYSTEM_TEMPLATE, SEGMENT_HUMAN_TEMPLATE
 from .prompts.final_answer_template import FINAL_ANSWER_SYSTEM_TEMPLATE, FINAL_ANSWER_HUMAN_TEMPLATE
+
+css = """
+<style>
+body {
+    font-family: 'Helvetica', sans-serif;
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 2em;
+    color: #444444;
+    line-height: 1.6;
+    background-color: #F9F9F9;
+    box-shadow: 2px 2px 15px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+    color: #383838;
+}
+
+h1 {
+    text-align: center;
+    border-bottom: 2px solid #3F51B5;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+}
+
+iframe {
+    display: block;
+    margin: 2em auto;
+    border: 1px solid #D3D3D3;
+    box-shadow: 2px 2px 15px rgba(0,0,0,0.1);
+}
+
+ol {
+    padding-left: 1em;
+}
+
+li {
+    margin-bottom: 0.5em;
+}
+
+li:last-child {
+    margin-bottom: 0;
+}
+
+a {
+    color: #3F51B5;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #303F9F;
+}
+
+</style>
+"""
 
 
 class EmbeddingModel(Enum):
@@ -100,6 +156,7 @@ class QAEngine:
                     n_relevant_segments += 1
                     relevant_summaries[int(ind)] = {"answer": answer,
                                                     "URL": self.df_summary.loc[ind, "url"],
+                                                    "segment_title": self.df_summary.loc[ind, "segment_name"],
                                                     "keywords": self.df_summary.loc[ind, "keywords"]}
             else:
                 return relevant_summaries, non_relevant_summaries
@@ -120,11 +177,13 @@ class QAEngine:
             [f"ANSWER {i+1}:\n{answer['answer']}\n" for i, answer in enumerate(answers.values())])
 
         chain = LLMChain(llm=chat, prompt=chat_prompt)
-        output = chain.run(question=question, context=prompt_context)
+        output = f"# {question}\n\n"
+        output += chain.run(question=question, context=prompt_context)
 
-        output += "\n\nHere are HubermanLab Podcast segments that relate to your question:\n\n"
+        # output += "\n\nHere are HubermanLab Podcast segments that relate to your question:\n\n"
+        output += "\n\n## Related Videos\n\n"
         for i, value in enumerate(answers.values()):
-            output += f'{i+1}. {value["URL"]}\n'
+            output += f'\n{i+1}. {value["segment_title"]}\n <iframe width="770" height="400" src="{value["URL"].replace("watch?v=", "embed/").replace("&t=", "?start=")[:-1]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>\n'
 
         return output
 
@@ -151,11 +210,19 @@ class QAEngine:
         # Getting the final answer
         answer = self.get_final_answer(question, relevant_segments)
 
-        final_answer_path = self.qa_output_path / \
+        final_answer_path_txt = self.qa_output_path / \
             f"{question}-final-answer.txt"
-        with open(final_answer_path, "w") as f:
+        with open(final_answer_path_txt, "w") as f:
             f.write(answer)
+
+        final_answer_path_html = self.qa_output_path / \
+            f"{question}-final-answer.html"
+        html_raw = markdown.markdown(answer, extensions=['extra'])
+
+        html = '<html><head>' + css + '</head><body>' + html_raw + '</body></html>'
+        with open(final_answer_path_html, 'w') as f:
+            f.write(html)
         end_time = time.time()
 
         logger.info(f"Full QA flow time: {round(end_time-start_time, 2)}")
-        return answer
+        return answer, html_raw
