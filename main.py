@@ -13,7 +13,7 @@ from app.src.constants import (
     IMAGES_DIR,
     SBERT_FAISS_INDEX
 )
-from app.src.llm.qa.qa_engine import QAEngine, EmbeddingModel
+from app.src.llm.qa.local_qa_engine import QAEngine, EmbeddingModel
 
 # Load environment variables from .env file
 load_dotenv()
