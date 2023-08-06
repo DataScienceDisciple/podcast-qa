@@ -118,7 +118,17 @@ def main_layout():
         with st.expander("### Currently Supported Podcast: HubermanLab Podcast 🧠", expanded=False):
             st.info(
                 """
-                The PodcastGPT Engine is specially designed for the [**HubermanLab podcast**](https://www.youtube.com/@hubermanlab), which focuses on health and performance-related subjects. This means you'll get the most precise answers for questions in these areas.
+                The PodcastGPT Engine is specially designed for the [**HubermanLab podcast**](https://www.youtube.com/@hubermanlab), which focuses on health and performance-related subjects. This means you'll get the most precise answers for questions in these areas:
+
+                - Meditation, Focus, and Cognitive Training
+                - Physical Performance and Recovery
+                - Nutrition, Supplements, and Metabolic Health
+                - Mental Health and Emotional Resilience
+                - Sleep, Circadian Rhythms and Light
+                - Neuroscience, Biohacking, and Health Monitoring
+                - Relationships, Social Dynamics, and Personal Development
+                - Taste, Smell, and Perception
+                - Gut Health and Microbiome
 
                 More podcasts will be supported in the future, and we welcome your suggestions for adding your favorite shows (DM me on Twitter(X))!
                 """
@@ -157,7 +167,18 @@ def main_layout():
 
                 **2. Which podcasts are supported?**
 
-                Currently, the PodcastGPT Engine exclusively supports the [HubermanLab podcast](https://www.youtube.com/@hubermanlab). However, I'm actively working on extending the database to other podcasts in the future. If you have a favorite podcast that you'd like to see supported, please don't hesitate to contact me!
+                Currently, the PodcastGPT Engine exclusively supports the [HubermanLab podcast](https://www.youtube.com/@hubermanlab). That means the questions should revolve around these topics:
+                - Meditation, Focus, and Cognitive Training
+                - Physical Performance and Recovery
+                - Nutrition, Supplements, and Metabolic Health
+                - Mental Health and Emotional Resilience
+                - Sleep, Circadian Rhythms and Light
+                - Neuroscience, Biohacking, and Health Monitoring
+                - Relationships, Social Dynamics, and Personal Development
+                - Taste, Smell, and Perception
+                - Gut Health and Microbiome 
+                
+                However, I'm actively working on extending the database to other podcasts in the future. If you have a favorite podcast that you'd like to see supported, please don't hesitate to contact me!
 
                 **3. How do I use Resource Mode and Question Mode?**
 
@@ -220,7 +241,7 @@ def main_layout():
             )
 
         input_text = st.text_area(label="🖋️ Ask a question:",
-                                  placeholder="Your question", key="user_input")
+                                  placeholder="Your question, e.g. How to sleep better?", key="user_input")
 
         run_button = st.button("Run 🚀")
 

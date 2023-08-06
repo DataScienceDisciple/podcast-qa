@@ -5,7 +5,6 @@ import time
 import vecs
 import numpy as np
 import pandas as pd
-import psycopg2.extras
 from sqlalchemy.orm import Session
 
 from enum import Enum
@@ -151,6 +150,7 @@ class PostgresQAEngine:
             189: 0.78,
             921: 0.77
         }
+        The values are sorted in a descending order.
         """
         query_results = self.docs.query(
             data=embedded_question,
@@ -184,8 +184,11 @@ class PostgresQAEngine:
                 else:
                     n_relevant_segments += 1
                     relevant_summaries[int(ind)] = {"answer": answer,
-                                                    "URL": resource.url,
-                                                    "segment_title": resource.segment_title
+                                                    "summary": resource.summary,
+                                                    "episode_name": resource.episode_name,
+                                                    "segment_title": resource.segment_title,
+                                                    "url": resource.url,
+                                                    "topic": resource.topic
                                                     }
 
             else:
@@ -209,12 +212,6 @@ class PostgresQAEngine:
 
         chain = LLMChain(llm=chat, prompt=chat_prompt)
         output = chain.run(question=question, context=prompt_context)
-
-        # output += "\n\nHere are HubermanLab Podcast segments that relate to your question:\n\n"
-        output += "\n\n## Related Videos\n\n"
-        for i, value in enumerate(answers.values()):
-            output += f'\n{i+1}. {value["segment_title"]}\n <iframe width="770" height="400" src="{value["URL"].replace("watch?v=", "embed/").replace("&t=", "?start=")[:-1]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>\n'
-
         return output
 
     def answer_full_flow(self, user_id, question):
@@ -248,6 +245,9 @@ class PostgresQAEngine:
 
         # Getting the final answer
         answer = self.get_final_answer(question, relevant_segments)
+        answer += "\n\n## Related Videos\n\n"
+        for i, value in enumerate(relevant_segments.values()):
+            answer += f'\n{i+1}. {value["segment_title"]}\n <iframe width="770" height="400" src="{value["url"].replace("watch?v=", "embed/").replace("&t=", "?start=")[:-1]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>\n'
 
         # Adding the answer to the AnswersHubermanLab table
         new_answer = AnswersHubermanLab(

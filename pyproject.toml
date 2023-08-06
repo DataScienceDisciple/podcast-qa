@@ -32,6 +32,7 @@ markdown = "^3.4.4"
 streamlit = "^1.25.0"
 torch = ">=2.0.0, !=2.0.1"
 vecs = "^0.3.0"
+mangum = "^0.17.0"
 
 
 [tool.poetry.group.dev.dependencies]
