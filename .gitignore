@@ -5,3 +5,8 @@ data/transcripts/*.txt
 data/summaries/*.txt
 *.DS_Store
 .env
+__pycache__
+*.txt
+*.html
+*.json
+*.csv

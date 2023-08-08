@@ -104,7 +104,8 @@ class PostgresQAEngine:
                  temperature: float = 0) -> None:
 
         if embedding_model.value == EmbeddingModel.SBERT.value:
-            self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+            self.embedding_model = SentenceTransformer(
+                'app/models/all-MiniLM-L6-v2')
             self.embedding_ndim = self.embedding_model.get_sentence_embedding_dimension()
         else:
             raise NotImplementedError

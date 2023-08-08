@@ -11,6 +11,8 @@ import pandas as pd
 
 # from src.llm.qa.local_qa_engine import LocalQAEngine, EmbeddingModel
 from src.llm.qa.postgres_qa_engine import PostgresQAEngine, EmbeddingModel
+from src.api.client import call_answer_hubermanlab, call_resource_hubermanlab
+from src.service.service import answer_response_to_html, resource_response_to_html
 from dotenv import load_dotenv, set_key
 
 load_dotenv()
@@ -252,14 +254,15 @@ def main_layout():
                 st.markdown(f"## {input_text}")
 
                 if mode.endswith("Question Mode") and st.session_state.get('api_key'):
-                    qa_engine = create_db_engine()
-                    answer, html = qa_engine.answer_full_flow(
-                        USER_ID, input_text)
-                    st.markdown(html, unsafe_allow_html=True)
+                    answer_response = call_answer_hubermanlab(
+                        USER_ID, input_text, st.session_state.get('api_key'))
+                    st.markdown(answer_response_to_html(
+                        answer_response=answer_response), unsafe_allow_html=True)
                 elif mode.endswith("Resource Mode"):
-                    qa_engine = create_db_engine()
-                    indices = qa_engine.resource_full_flow(USER_ID, input_text)
-                    st.markdown(indices, unsafe_allow_html=True)
+                    resource_response = call_resource_hubermanlab(
+                        USER_ID, input_text)
+                    st.markdown(resource_response_to_html(
+                        resource_response=resource_response), unsafe_allow_html=True)
                 elif mode.endswith("Question Mode") and not st.session_state.get('api_key'):
                     st.error(
                         "🚫 For Question Mode, API Keys are required. Please provide them in the left panel.")
